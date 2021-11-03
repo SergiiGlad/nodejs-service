@@ -1,6 +1,6 @@
 const express = require('express');
 const app = express();
-const secret1 = 'projects/427943077440/secrets/controller-app-db-username-dev/versions/latest'
+const secret1 = 'projects/1019145220404/secrets/mysql_password/versions/latest'
 
 
 // Imports the Secret Manager library
