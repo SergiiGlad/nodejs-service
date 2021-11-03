@@ -1,8 +1,7 @@
 const express = require('express');
 const app = express();
-const secret1 = 'projects/1019145220404/secrets/mysql_password/versions/latest'
+const secret1 = 'projects/427943077440/secrets/controller-app-db-username-dev/versions/latest'
 
-var body = 'Hello from App Engine!'
 
 // Imports the Secret Manager library
 const {SecretManagerServiceClient} = require('@google-cloud/secret-manager');
@@ -10,7 +9,7 @@ const {SecretManagerServiceClient} = require('@google-cloud/secret-manager');
 // Instantiates a client
 const client = new SecretManagerServiceClient();
 
-function accessSecretVersion(name) {
+async function accessSecretVersion(name) {
   const [version] = await client.accessSecretVersion({
     name: name,
   });
@@ -21,11 +20,11 @@ function accessSecretVersion(name) {
 
 
 app.get('/', (req, res) => {
-  res.send(body.concat(accessSecretVersion(secret1)));
+  res.send('Hello from App Engine!',accessSecretVersion(secret1));
 });
 
 // Listen to the App Engine-specified port, or 8080 otherwise
-const PORT = process.env.PORT || 8081;
+const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
   console.log(`Server listening on port ${PORT}...`);
 });
