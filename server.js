@@ -16,12 +16,18 @@ async function accessSecretVersion(name) {
   });
 
   // Extract the payload as a string.
-  return version.payload.data.toString();
+  const payload = version.payload.data.toString();
+
+  // WARNING: Do not print the secret in a production environment - this
+  // snippet is showing how to access the secret material.
+  console.info(`Payload: ${payload}`);
+
+  return payload;
 }
 
 
 app.get('/', (req, res) => {
-  res.send(accessSecretVersion(secret1));
+  res.send(`${accessSecretVersion(secret1)}`);
 });
 
 // Listen to the App Engine-specified port, or 8080 otherwise
