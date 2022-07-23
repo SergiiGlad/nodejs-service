@@ -36,7 +36,7 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           context: ./sample_app 
-          file: ./Dockerfile
+          file: ./sample_app/Dockerfile
           builder: ${{ steps.buildx.outputs.name }}
           push: true
           tags: ${{ secrets.DOCKER_HUB_USERNAME }}/nodejs-service:latest
