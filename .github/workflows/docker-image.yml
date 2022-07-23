@@ -45,13 +45,15 @@ jobs:
       - 
         name: Build and push Docker image
         uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
+        id: docker_build
         with:
-          context: ./
+          context: ./sample_app 
           file: ./sample_app/Dockerfile
+          builder: ${{ steps.buildx.outputs.name }}
           push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
-      -
+          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/nodejs-service:latest
+          cache-from: type=local,src=/tmp/.buildx-cache
+          cache-to: type=local,dest=/tmp/.buildx-cache
         name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
 
