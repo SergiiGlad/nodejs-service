@@ -1,8 +1,6 @@
 name: Docker Image CI
 
 on:
-  push:
-    branches: [ "master" ]
   pull_request:
     branches: [ "master" ]
 
@@ -27,11 +25,12 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-buildx-
       - 
-        name: Login to Docker Hub
+        name: Github Container Registry login
         uses: docker/login-action@v1
         with:
-          username: ${{ secrets.DOCKER_HUB_USERNAME }}
-          password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}  
       -
         name: Build and push
         id: docker_build
@@ -41,7 +40,7 @@ jobs:
           file: ./sample_app/Dockerfile
           builder: ${{ steps.buildx.outputs.name }}
           push: true
-          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/nodejs-service:latest
+          tags: ghcr.io/${{ github.repository_owner }}/simplewhale:latest
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache
       -
